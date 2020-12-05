@@ -23,4 +23,4 @@ list.o: $(INC)/list.c $(INC)/list.h
 .PHONY: clean
 
 clean :
-	rm -f $(ODIR)/*.o *.o *.ghc
+	rm -f $(ODIR)/*.o *.o *.ghc $(ODIR)/*.ghc main bin/main
