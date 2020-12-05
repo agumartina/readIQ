@@ -13,7 +13,7 @@
 #include "dataN1_header.h"
 #include <errno.h>
 
-struct Header dataN1_header(FILE *fid, uint16_t strategy){
+struct Header fun_dataN1_header(FILE *fid, uint16_t strategy){
 
     size_t control;
     struct Header header;
@@ -70,22 +70,25 @@ struct Header dataN1_header(FILE *fid, uint16_t strategy){
         if(control==1){
             switch (unifierMethod){
                 case 0:
-                    header.reservado.unifierMethod = 'Regular';
+                    //char *metodo = "Regular";
+                    //header.reservado.unifierMethod = malloc(strlen(metodo) + 1);
+                    //strcpy(header.reservado.unifierMethod, metodo);
+                    header.reservado.unifierMethod = "Regular";
                     break;
                 case 1:
-                    header.reservado.unifierMethod = 'Atenuado';
+                    header.reservado.unifierMethod = "Atenuado";
                     break;
                 case 2:
-                    header.reservado.unifierMethod = 'Saturador';
+                    header.reservado.unifierMethod = "Saturador";
                     break;
                 case 3:
-                    header.reservado.unifierMethod = 'Concatenador';
+                    header.reservado.unifierMethod = "Concatenador";
                     break;
                 case 4:
-                    header.reservado.unifierMethod = 'Asimilador';
+                    header.reservado.unifierMethod = "Asimilador";
                     break;
                 case 5:
-                    header.reservado.unifierMethod = 'Ganancia';
+                    header.reservado.unifierMethod = "Ganancia";
                     break;
                 default:
                     perror("No switch case unifierMethod");

@@ -18,7 +18,7 @@
 **/
 
 #include "dataN1_header.h"
-#include "libs/list.h"
+#include "include/list.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdarg.h>         /* ISO C variable aruments */
@@ -65,7 +65,7 @@ struct Node *dataN1_read_header(char *filename, int n_args, ...){
 
         /* SAMPLES */
         int m = 1;
-        int n = 1;
+        // int n = 1;
         int max_channel=MAX_CHANNEL;
         int iq=IQ;
         int sample_size=SAMPLE_SIZE;
@@ -73,7 +73,7 @@ struct Node *dataN1_read_header(char *filename, int n_args, ...){
 
         while (!feof(fid)){
                 /* Lectura de encabezado */
-                h = dataN1_header(fid);
+                h = fun_dataN1_header(fid, 9001);
 
                 if(h.version!=9999){    /* if h is not empty CHECK IF THIS WORK */
                         switch(h.version){
@@ -82,12 +82,11 @@ struct Node *dataN1_read_header(char *filename, int n_args, ...){
                                 break;
                         case 2: {
                                 if (idx < m) {
-                                        if(fseek(fid,2,SEEK_CUR)!=0){
+                                        if(fseek(fid, 2, SEEK_CUR)!=0){
                                                 fprintf(stderr, "ERROR: Fseek, Value of errno: %d\n", errno);
                                                 exit(EXIT_FAILURE);
                                         }
-                                        if(fseek(fid, h.validSamples * max_channel * iq * sample_size, SEEK_CUR)
-                                                != 0) {
+                                        if(fseek(fid, h.validSamples * max_channel * iq * sample_size, SEEK_CUR) != 0) {
                                                 fprintf(stderr, "ERROR: Fseek, Value of errno: %d\n", errno);
                                                 exit(EXIT_FAILURE);
                                         }
@@ -117,10 +116,11 @@ struct Node *dataN1_read_header(char *filename, int n_args, ...){
                                 break;
                         }
                         m++;
-                        n++;
+                        // n++;
                 }
         }
         fclose(fid);
+
         return nodeHeader;
 
 }

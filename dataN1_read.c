@@ -20,8 +20,8 @@
  *  \see dataN1_read_header.c
 **/
 
+#include "include/list.h"
 #include "dataN1_header.h"
-#include "libs/list.h"
 #include <errno.h>
 #include <string.h>
 #include <malloc.h>
@@ -37,13 +37,13 @@
 #define IQ 2;
 #define MAX_DATAN1_FILE 10000;
 
-struct Node *dataN1_read(char *filename,int n_args, ...){
+struct Node *dataN1_read(char *filename, int n_args, ...){
         int idx;
         extern int errno;
         size_t error;
 
         struct Node *nodeHeader;
-        struct Node *temp;
+        // struct Node *temp;
         struct Data *IQheader, *IQfirst;
         struct Header h;
         struct data d = {0+0*I,0+0*I};
@@ -51,6 +51,7 @@ struct Node *dataN1_read(char *filename,int n_args, ...){
         float Vi, Vq, Hi, Hq;           // to temporary read I/Q data 
 
         va_list ap;
+        /* Initializing arguments to store all values after n_args */
         va_start(ap, n_args);
 
         FILE *fid;
@@ -85,11 +86,12 @@ struct Node *dataN1_read(char *filename,int n_args, ...){
         int max_channel = MAX_CHANNEL;
         int iq = IQ;
         int sample_size = SAMPLE_SIZE;
-        int max_datan1_file = MAX_DATAN1_FILE;
+        uint16_t estrategia = 9001;
+        // int max_datan1_file = MAX_DATAN1_FILE;
 
         while (!feof(fid)){
                 /* Lectura de encabezado */
-                h = dataN1_header(fid);
+                h = fun_dataN1_header(fid, estrategia);
 
                 if(h.version!=9999){    /* if h is not empty CHECK IF THIS WORK */
                         switch(h.version){

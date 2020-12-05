@@ -1,9 +1,9 @@
-#ifndef _dataN1_header_
-#define _dataN1_header_
+#ifndef IQ_DATAN1_HEADER_H
+#define IQ_DATAN1_HEADER_H
 
 #include "structures.h"
 #include <stdio.h>
 
-struct Header dataN1_header(FILE *);
+struct Header fun_dataN1_header(FILE *, uint16_t);
 
 #endif

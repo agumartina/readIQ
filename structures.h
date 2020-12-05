@@ -1,7 +1,9 @@
-/** @file structures.h
- *  @brief Definitions of data structures de datos y metadatos IQ según doumentación
- *  @author Agustín Martina (amartina(at)unc.edu.ar)
- */
+// 
+// @file structures.h
+// @brief Definitions of data structures de datos y metadatos IQ según doumentación
+// @author Agustín Martina (amartina(at)unc.edu.ar)
+//
+
 #ifndef IQ_STRUCTURES_H
 #define IQ_STRUCTURES_H
 
@@ -12,7 +14,7 @@
 /** @brief Structure of reserved data of a headers pulse
  */
 struct Reservado{
-        char *unifierMethod;
+        char const *unifierMethod;
 
         float unifierThreshold;         // Espacio Reservado : umbral del metodo de unificacion
 
@@ -74,8 +76,8 @@ struct Header{
 /** @brief Declaration of IQ Data structure of a pulse #VER XXX
  */
 struct data{
-        float complex V;
-        float complex H;
+        float _Complex V;
+        float _Complex H;
 };
 
 #endif //IQ_STRUCTURES_H
