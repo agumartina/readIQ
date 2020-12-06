@@ -4,7 +4,9 @@
 
 #ifndef IQ_LIST_H
 #define IQ_LIST_H
-#include "../structures.h"
+
+#include "structures.h"
+
 struct Node *GetNewNode(struct Header);
 struct Node *GetHeadNull();
 struct Node *InsertAtHead(struct Header, struct Node*);

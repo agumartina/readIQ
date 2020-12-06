@@ -9,11 +9,153 @@
  *  \param[out] header - Header structure with header data
 **/
 
-#include "structures.h"
+#include "include/structures.h"
 #include "dataN1_header.h"
+#include "include/cJSON.h"
+#include <inttypes.h>
 #include <errno.h>
 
-struct Header fun_dataN1_header(FILE *fid, uint16_t strategy){
+void write_JSON(cJSON *jheader){
+    FILE *jfile;
+    char *out;
+
+    out = cJSON_Print(jheader);
+    jfile = fopen("test/head.json", "w+"); 
+    fprintf(jfile, "%s", out);
+
+    free(out);
+    fclose(jfile);
+}
+
+void save_as_JSON(struct Header header){
+    
+
+    cJSON *jheader = cJSON_CreateObject();
+    if (jheader == NULL){
+        printf("No se pudo crear el objeto JSON");
+        return;
+    }
+
+    cJSON *version = NULL;
+    cJSON *estrategia = NULL;
+    cJSON *drxVersion = NULL;
+
+    cJSON *initCW = NULL;
+    cJSON *azimuth = NULL;
+    cJSON *elevation = NULL;
+
+    cJSON *idVolumen = NULL;
+    cJSON *idBarrido = NULL;
+    cJSON *idConjunto = NULL;
+    cJSON *idGrupo = NULL;
+    cJSON *idPulso = NULL;
+    
+    cJSON *finBarrido = NULL;
+    cJSON *iniBarrido = NULL;
+    cJSON *finGrupo = NULL;
+    cJSON *inhibido = NULL;
+
+    cJSON *validSamples = NULL;
+    cJSON *nroAdquisicion = NULL;
+    cJSON *nroSecuencia = NULL;
+
+    cJSON *timeval_h = NULL;
+    cJSON *timeval_l = NULL;
+
+    cJSON *reservado = NULL;
+    cJSON *reservados = NULL;
+    cJSON *unifierMethod = NULL;
+
+    version = cJSON_CreateNumber(header.version);
+    if (version == NULL) return;
+    cJSON_AddItemToObject(jheader, "version", version);
+    estrategia = cJSON_CreateNumber(header.estrategia);
+    if (estrategia == NULL) return;
+    cJSON_AddItemToObject(jheader, "estrategia", estrategia);
+    drxVersion = cJSON_CreateNumber(header.drxVersion);
+    if (drxVersion == NULL) return;
+    cJSON_AddItemToObject(jheader, "drxVersion", drxVersion);
+    
+    initCW = cJSON_CreateNumber(header.initCW);
+    if (initCW == NULL) return;
+    cJSON_AddItemToObject(jheader, "initCW", initCW);
+    azimuth = cJSON_CreateNumber(header.azimuth);
+    if (azimuth == NULL) return;
+    cJSON_AddItemToObject(jheader, "azimuth", azimuth);
+    elevation = cJSON_CreateNumber(header.elevation);
+    if (elevation == NULL) return;
+    cJSON_AddItemToObject(jheader, "elevation", elevation);
+
+    idVolumen = cJSON_CreateNumber(header.idVolumen);
+    if (idVolumen == NULL) return;
+    cJSON_AddItemToObject(jheader, "idVolumen", idVolumen);
+    idBarrido = cJSON_CreateNumber(header.idBarrido);
+    if (idBarrido == NULL) return;
+    cJSON_AddItemToObject(jheader, "idBarrido", idBarrido);
+    idConjunto = cJSON_CreateNumber(header.idConjunto);
+    if (idConjunto == NULL) return;
+    cJSON_AddItemToObject(jheader, "idConjunto", idConjunto);
+    idGrupo = cJSON_CreateNumber(header.idGrupo);
+    if (idGrupo == NULL) return;
+    cJSON_AddItemToObject(jheader, "idGrupo", idGrupo);
+    idPulso = cJSON_CreateNumber(header.idPulso);
+    if (idPulso == NULL) return;
+    cJSON_AddItemToObject(jheader, "idPulso", idPulso);
+
+    iniBarrido = cJSON_CreateNumber(header.iniBarrido);
+    if (iniBarrido == NULL) return;
+    cJSON_AddItemToObject(jheader, "iniBarrido", iniBarrido);
+    finBarrido = cJSON_CreateNumber(header.finBarrido);
+    if (finBarrido == NULL) return;
+    cJSON_AddItemToObject(jheader, "finBarrido", finBarrido);
+    finGrupo = cJSON_CreateNumber(header.finGrupo);
+    if (finGrupo == NULL) return;
+    cJSON_AddItemToObject(jheader, "finGrupo", finGrupo);
+    inhibido = cJSON_CreateNumber(header.inhibido);
+    if (inhibido == NULL) return;
+    cJSON_AddItemToObject(jheader, "inhibido", inhibido);
+
+    validSamples = cJSON_CreateNumber(header.validSamples);
+    if (validSamples == NULL) return;
+    cJSON_AddItemToObject(jheader, "validSamples", validSamples);
+    nroAdquisicion = cJSON_CreateNumber(header.nroAdquisicion);
+    if (nroAdquisicion == NULL) return;
+    cJSON_AddItemToObject(jheader, "nroAdquisicion", nroAdquisicion);
+    nroSecuencia = cJSON_CreateNumber(header.nroSecuencia);
+    if (nroSecuencia == NULL) return;
+    cJSON_AddItemToObject(jheader, "nroSecuencia", nroSecuencia);
+
+    
+    char ctimeval_h[20];
+    sprintf(ctimeval_h, "0x%016" PRIx64, header.timeval_h);
+    timeval_h = cJSON_CreateString(ctimeval_h);
+    if (timeval_h == NULL) return;
+    cJSON_AddItemToObject(jheader, "timeval_h", timeval_h);
+
+    char ctimeval_l[20];
+    sprintf(ctimeval_l, "0x%016" PRIx64, header.timeval_l);
+    timeval_l = cJSON_CreateString(ctimeval_l);
+    if (timeval_l == NULL) return;
+    cJSON_AddItemToObject(jheader, "timeval_l", timeval_l);
+
+    reservado = cJSON_CreateArray();
+    if (reservado == NULL) return;
+    cJSON_AddItemToObject(jheader, "reservado", reservado);
+
+    reservados = cJSON_CreateObject();
+    if (reservados == NULL) return;
+    cJSON_AddItemToArray(reservado, reservados);
+
+    unifierMethod = cJSON_CreateString(header.reservado.unifierMethod);
+    if (unifierMethod == NULL) return;
+    cJSON_AddItemToObject(reservados, "unifierMethod", unifierMethod);
+
+    write_JSON(jheader);
+
+    cJSON_Delete(jheader);
+}
+
+struct Header dataN1_header(FILE *fid, uint16_t strategy, bool json){
 
     size_t control;
     struct Header header;
@@ -26,10 +168,9 @@ struct Header fun_dataN1_header(FILE *fid, uint16_t strategy){
     header.estrategia = strategy;
     //DATAN1_HEADER Devuelve el header del archivo de datan1 'filename'
     control = fread(&version,sizeof(uint16_t),1,fid);   // fread(buffer,sizeof(buffer),1,ptr); // read 10 bytes to our buffer
-    if(control==1 && version==2){                       // si control no esta vacio y version es 2
-
+    if(control==1){                       
         header.version=version;
-        fread(&header.drxVersion,sizeof(uint16_t),1,fid);// Version de DRXProcessor
+        fread(&header.drxVersion, sizeof(uint16_t),1,fid);// Version de DRXProcessor
             /* RESERVADO */
         if(fseek(fid, 4, SEEK_CUR)!=0){    // in matlab status = fseek(fileID, offset, origin) origin='cof' current position
             fprintf(stderr, "ERROR: Fseek, Value of errno: %d\n", errno);
@@ -114,6 +255,10 @@ struct Header fun_dataN1_header(FILE *fid, uint16_t strategy){
         fread(&header.reservado.pulsePeakPower_V_reg, sizeof(int32_t),1,fid);           // Espacio Reservado : potencia pico de muestra de pulso canal V regular
         fread(&header.reservado.pulsePeakPower_V_att, sizeof(int32_t),1,fid);           // Espacio Reservado : potencia pico de muestra de pulso canal V atenuado
         fread(&header.basura, sizeof(int32_t),2,fid);                                   // Basura
+
+        if(json == true){
+            save_as_JSON(header);
+        }
     }
     return header;
 }

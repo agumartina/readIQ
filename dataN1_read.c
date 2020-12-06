@@ -91,7 +91,7 @@ struct Node *dataN1_read(char *filename, int n_args, ...){
 
         while (!feof(fid)){
                 /* Lectura de encabezado */
-                h = fun_dataN1_header(fid, estrategia);
+                h = dataN1_header(fid, estrategia, true);
 
                 if(h.version!=9999){    /* if h is not empty CHECK IF THIS WORK */
                         switch(h.version){

@@ -1,9 +1,12 @@
 #ifndef IQ_DATAN1_HEADER_H
 #define IQ_DATAN1_HEADER_H
 
-#include "structures.h"
+#include "include/structures.h"
+#include "include/cJSON.h"
 #include <stdio.h>
-
-struct Header fun_dataN1_header(FILE *, uint16_t);
+#include <stdbool.h>
+struct Header dataN1_header(FILE *, uint16_t, bool);
+void save_as_JSON(struct Header);
+void write_JSON(cJSON *);
 
 #endif
