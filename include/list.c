@@ -111,7 +111,7 @@ void PrintList(struct Node *head) {
                         temp->head.idVolumen, temp->head.idBarrido, temp->head.idConjunto, temp->head.idGrupo, temp->head.idPulso,
                         temp->head.iniBarrido, temp->head.finBarrido, temp->head.finGrupo, temp->head.inhibido, temp->head.validSamples,
                         temp->head.nroAdquisicion, temp->head.nroSecuencia, temp->head.timeval_h, temp->head.timeval_l);
-                printf("\n\n %.19lf, %.19lf, %.19lf, %.19lf, %.19lf, %.19lf, %.19lf,%.19lf,%.19lf, %u,%u,%u,%u, %u\n",
+                printf("\n\n %.19lf, %.19lf, %.19lf, %.19lf, %.19lf, %.19lf, %.19lf,%.19lf,%.19lf, %d, %d, %d, %d, %d\n",
                         temp->head.reservado.unifierThreshold, temp->head.reservado.saturedSampledRatio_H,
                         temp->head.reservado.saturedSampledRatio_V, temp->head.reservado.attenuatedSampledRatio_H, temp->head.reservado.attenuatedSampledRatio_V,
                         temp->head.reservado.pulseSaturedSampledRatio_H_reg, temp->head.reservado.pulseSaturedSampledRatio_H_att, temp->head.reservado.pulseSaturedSampledRatio_V_reg,

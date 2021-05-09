@@ -5,6 +5,8 @@
 #ifndef IQ_DATAN1_READ_H
 #define IQ_DATAN1_READ_H
 
-struct Node* dataN1_read(char *filename, int n_args,...);
+#include "structures.h"
+
+struct Node* dataN1_read(struct fileName*);
 
 #endif

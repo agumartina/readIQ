@@ -1,30 +1,20 @@
 CC=gcc
-CFLAGS=-I $(LDIR)
-LDIR =lib
-ODIR=bin
-RM= rm -f
-INC=include
-FLAGS= -Wall -Werror -pedantic -Wextra -Wconversion -std=gnu11
 
-main : main.o dataN1_read.o dataN1_header.o list.o cjson.o
-	$(CC) -g $(FLAGS) $^ -o $(ODIR)/$@
+BINARY_DIR = bin
+INCLUDE_DIR = include
 
-main.o: main.c
-	$(CC) -c $(FLAGS) $^ -o $@
+CFLAGS = -O1 -ggdb -Wall -Werror -Wno-missing-field-initializers -pedantic -Wextra -Wconversion -std=gnu11 -I$(INCLUDE_DIR)/
+SRCS_INC = $(patsubst %.c,%.o,$(wildcard $(INCLUDE_DIR)/*.c))
+_DEPS = strcutures.h
+DEPS = $(patsubst %,$(INCLUDE_DIR)/%,$(_DEPS))
 
-dataN1_read.o: dataN1_read.c dataN1_read.h 
-	$(CC) -c $(FLAGS) $< -o $@
+all: main
 
-dataN1_header.o: dataN1_header.c dataN1_header.h
-	$(CC) -c $(FLAGS) $< -o $@
-
-list.o: $(INC)/list.c $(INC)/list.h
-	$(CC) -c $(FLAGS) $< -o $@
-
-cjson.o: $(INC)/cJSON.c $(INC)/cJSON.h
-	$(CC) -c $(FLAGS) $< -o $@
+# Regla para el cliente
+main: $(SRCS_INC)
+	$(CC) -o $(BINARY_DIR)/$@ $^ $(CFLAGS)
 
 .PHONY: all clean
 
 clean :
-	rm -f $(ODIR)/*.o *.o *.ghc $(ODIR)/*.ghc main $(ODIR)/main
+	rm -Rf $(BINARY_DIR)/*.o

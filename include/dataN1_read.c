@@ -20,14 +20,13 @@
  *  \see dataN1_read_header.c
 **/
 
-#include "include/list.h"
+#include "list.h"
 #include "dataN1_header.h"
 #include <errno.h>
 #include <string.h>
 #include <malloc.h>
 #include <fcntl.h>
 #include <stdarg.h>         /* ISO C variable aruments */
-#include <zconf.h>
 #include <complex.h>    /* Standard Library of Complex Numbers */
 #include <netcdf.h> 
 
@@ -37,7 +36,7 @@
 #define IQ 2;
 #define MAX_DATAN1_FILE 10000;
 
-struct Node *dataN1_read(char *filename, int n_args, ...){
+struct Node *dataN1_read(struct fileName *infofile){
         int idx;
         extern int errno;
         size_t error;
@@ -50,31 +49,18 @@ struct Node *dataN1_read(char *filename, int n_args, ...){
 
         float Vi, Vq, Hi, Hq;           // to temporary read I/Q data 
 
-        va_list ap;
-        /* Initializing arguments to store all values after n_args */
-        va_start(ap, n_args);
-
         FILE *fid;
 
         /* Inicializamos la lista*/
         nodeHeader=GetHeadNull();
         IQheader=GetDataNull();
 
-        if (n_args==0){
-                /* TO BE IMPLEMENTED: abre un cuadro de diálogo para seleccionar que archivo abrir*/
-                printf("TBI: FALTA IMPLEMENTAR APERTURA DE UN ARCHIVO SI NO SE SELECCIONÓ NINGUNO");
-        }
-
         /*lectura de muestras*/
         idx=MAX_DATAN1_FILE;
-        if(n_args==2){
-                idx = va_arg(ap, int);
-        }
-
-        va_end(ap);
 
         /** We open the binary file to be parsed  */
-        fid = fopen(filename, "rb");
+        printf("Opening %s", infofile->filepath);
+        fid = fopen(infofile->filepath, "rb");
         if (fid == NULL){
                 perror("Error in open N1 file");
                 return 0;
@@ -86,12 +72,12 @@ struct Node *dataN1_read(char *filename, int n_args, ...){
         int max_channel = MAX_CHANNEL;
         int iq = IQ;
         int sample_size = SAMPLE_SIZE;
-        uint16_t estrategia = 9001;
+
         // int max_datan1_file = MAX_DATAN1_FILE;
 
         while (!feof(fid)){
                 /* Lectura de encabezado */
-                h = dataN1_header(fid, estrategia, true);
+                h = dataN1_header(fid, infofile, true);
 
                 if(h.version!=9999){    /* if h is not empty CHECK IF THIS WORK */
                         switch(h.version){

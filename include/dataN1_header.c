@@ -9,11 +9,10 @@
  *  \param[out] header - Header structure with header data
 **/
 
-#include "include/structures.h"
 #include "dataN1_header.h"
-#include "include/cJSON.h"
 #include <inttypes.h>
 #include <errno.h>
+#include <string.h>
 
 void write_JSON(cJSON *jheader){
     FILE *jfile;
@@ -69,7 +68,7 @@ void save_as_JSON(struct Header header){
     version = cJSON_CreateNumber(header.version);
     if (version == NULL) return;
     cJSON_AddItemToObject(jheader, "version", version);
-    estrategia = cJSON_CreateNumber(header.estrategia);
+    estrategia = cJSON_CreateString(header.estrategia);
     if (estrategia == NULL) return;
     cJSON_AddItemToObject(jheader, "estrategia", estrategia);
     drxVersion = cJSON_CreateNumber(header.drxVersion);
@@ -97,7 +96,7 @@ void save_as_JSON(struct Header header){
     cJSON_AddItemToObject(jheader, "idConjunto", idConjunto);
     idGrupo = cJSON_CreateNumber(header.idGrupo);
     if (idGrupo == NULL) return;
-    cJSON_AddItemToObject(jheader, "idGrupo", idGrupo);
+    cJSON_AddItemToObject(jheader, "idPulso", idGrupo);
     idPulso = cJSON_CreateNumber(header.idPulso);
     if (idPulso == NULL) return;
     cJSON_AddItemToObject(jheader, "idPulso", idPulso);
@@ -155,7 +154,7 @@ void save_as_JSON(struct Header header){
     cJSON_Delete(jheader);
 }
 
-struct Header dataN1_header(FILE *fid, uint16_t strategy, bool json){
+struct Header dataN1_header(FILE *fid, struct fileName *file, bool json){
 
     size_t control;
     struct Header header;
@@ -165,7 +164,7 @@ struct Header dataN1_header(FILE *fid, uint16_t strategy, bool json){
 
     /* control struct empty */
     header.version = 9999;
-    header.estrategia = strategy;
+    strcpy(header.estrategia, file->estrategia);
     //DATAN1_HEADER Devuelve el header del archivo de datan1 'filename'
     control = fread(&version,sizeof(uint16_t),1,fid);   // fread(buffer,sizeof(buffer),1,ptr); // read 10 bytes to our buffer
     if(control==1){                       

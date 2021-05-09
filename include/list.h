@@ -7,6 +7,7 @@
 
 #include "structures.h"
 
+
 struct Node *GetNewNode(struct Header);
 struct Node *GetHeadNull();
 struct Node *InsertAtHead(struct Header, struct Node*);

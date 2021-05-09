@@ -39,7 +39,7 @@ struct Reservado{
 struct Header{
         uint16_t    version;            // Version de DataN1
         uint16_t    drxVersion;         // Version del procesador DRX que generó el dato n1
-        uint16_t    estrategia;         // número de estrategia
+        char        estrategia[4];         // número de estrategia
         
         double      initCW;             // Inicio de ventana de recepcion en segundos
         float       azimuth;            // Posicion en Azimuth en grados
@@ -85,12 +85,13 @@ struct data{
  */
 struct fileName{
     char radar[5];
-    char estrategia[4];
+    char estrategia[5];
     char iniTime[50];
     char zeta[4];
     char volumen[2];
     char indice[3];
     char num[2];
+    char *filepath;
 };
 
 #endif //IQ_STRUCTURES_H
